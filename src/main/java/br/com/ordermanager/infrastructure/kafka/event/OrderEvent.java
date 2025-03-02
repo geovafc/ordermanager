@@ -1,15 +1,15 @@
-package br.com.ordermanager.dtos.requests;
+package br.com.ordermanager.infrastructure.kafka.event;
 
-import br.com.ordermanager.entities.Order;
-import br.com.ordermanager.entities.OrderItem;
+import br.com.ordermanager.domain.entities.Order;
+import br.com.ordermanager.domain.entities.OrderItem;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public record OrderRequestDTO(
+public record OrderEvent(
         UUID externalOrderId,
-        List<OrderItemRequestDTO> items
+        List<OrderItemEvent> items
 ) {
     public List<OrderItem> toOrderItemEntities(Order order) {
         return items.stream()

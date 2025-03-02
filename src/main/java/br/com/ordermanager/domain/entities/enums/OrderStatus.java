@@ -1,4 +1,4 @@
-package br.com.ordermanager.entities.enums;
+package br.com.ordermanager.domain.entities.enums;
 
 public enum OrderStatus {
     RECEIVED,

@@ -1,6 +1,6 @@
-package br.com.ordermanager.repositories;
+package br.com.ordermanager.domain.repositories;
 
-import br.com.ordermanager.entities.Order;
+import br.com.ordermanager.domain.entities.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

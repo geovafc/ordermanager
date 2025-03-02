@@ -1,10 +1,10 @@
-package br.com.ordermanager.dtos.requests;
+package br.com.ordermanager.infrastructure.kafka.event;
 
-import br.com.ordermanager.entities.OrderItem;
+import br.com.ordermanager.domain.entities.OrderItem;
 
 import java.math.BigDecimal;
 
-public record OrderItemRequestDTO(
+public record OrderItemEvent(
     String productName,
     Integer quantity,
     BigDecimal price

@@ -1,6 +1,6 @@
-package br.com.ordermanager.entities;
+package br.com.ordermanager.domain.entities;
 
-import br.com.ordermanager.entities.enums.OrderStatus;
+import br.com.ordermanager.domain.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

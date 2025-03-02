@@ -1,4 +1,4 @@
-package br.com.ordermanager.entities;
+package br.com.ordermanager.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
