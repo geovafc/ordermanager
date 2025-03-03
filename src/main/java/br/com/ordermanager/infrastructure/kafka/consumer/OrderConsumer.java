@@ -23,7 +23,5 @@ public class OrderConsumer {
         orderService.processOrder(orderEvent);
         acknowledgment.acknowledge();
 
-//        throw new RuntimeException("Erro ao processar a mensagem");
-
     }
 }

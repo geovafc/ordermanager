@@ -1,19 +1,5 @@
 version: '3.8'
 
-#services:
-#  kafka-ui:
-#    image: landoop/fast-data-dev
-#    ports:
-#      - "2181:2181"  # Zookeeper
-#      - "3030:3030"  # Landoop UI
-#      - "8081:8081"  # Schema Registry
-#      - "8082:8082"  # Kafka REST Proxy
-#      - "9581:9581"  # JMX (Kafka)
-#      - "9582:9582"  # JMX (Schema Registry)
-#      - "9583:9583"  # JMX (Kafka Connect)
-#      - "9584:9584"  # JMX (Kafka REST Proxy)
-#    environment:
-#      ADV_HOST: "127.0.0.1" # Isso garante que o Kafka seja acessível via localhost
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -38,3 +24,13 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    container_name: kafdrop
+    depends_on:
+      - kafka
+    ports:
+      - 9000:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:9092

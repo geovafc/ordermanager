@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -37,13 +36,16 @@ public class OrderService {
 
             saveOutbox(orderEvent);
 
-
         }
     }
 
     private Order buildOrder(OrderEvent orderEvent) {
+
+
         var totalPrice = orderEvent.items().stream()
-                .map(orderItem -> orderItem.price().multiply(BigDecimal.valueOf(orderItem.quantity())))
+                .map(orderItem -> orderItem
+                        .price()
+                        .multiply(BigDecimal.valueOf(orderItem.quantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         var order = Order.builder()

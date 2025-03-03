@@ -1,6 +1,5 @@
 package br.com.ordermanager.domain.entities;
 
-import br.com.ordermanager.domain.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +10,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -35,8 +33,7 @@ public class Outbox {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "payload", columnDefinition = "json")
-//    @Column(name = "payload", columnDefinition = "jsonb")
+    @Column(name = "payload", columnDefinition = "jsonb")
     @JdbcTypeCode(SqlTypes.JSON)
     private String payload;
 

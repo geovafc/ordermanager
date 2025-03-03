@@ -36,16 +36,12 @@ public class KafkaConsumerConfig {
     public ConsumerFactory<String, OrderEvent> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
 
-//        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "${spring.kafka.consumer.bootstrap-servers}");
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092");
-//        props.put(ConsumerConfig.GROUP_ID_CONFIG, "${kafka.consumer.group-id.order-group}");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "order-group");
-//        props.put(String.valueOf(StringDeserializer.class), StringDeserializer.class);
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "${spring.kafka.consumer.bootstrap-servers}");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "${kafka.consumer.group-id.order-group}");
         props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, OrderEvent.class);
-        props.put(JsonDeserializer.TRUSTED_PACKAGES, "br.com.ordermanager.infrastructure.kafka.event"); // Adicione o pacote do seu OrderEvent
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "br.com.ordermanager.infrastructure.kafka.event");
 
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(OrderEvent.class));
     }
-
 
 }

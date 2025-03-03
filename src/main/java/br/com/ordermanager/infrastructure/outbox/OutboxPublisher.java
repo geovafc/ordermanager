@@ -12,9 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.util.List;
-
 @Component
 @Slf4j
 public class OutboxPublisher {
@@ -31,25 +28,34 @@ public class OutboxPublisher {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Scheduled(fixedRate = 5000) // Executa a cada 5 segundos
+    @Scheduled(fixedRateString = "${outbox.scheduled.fixedRate}")
     @Transactional
     public void publishOutBoxEvents() {
-        List<Outbox> outboxList = outboxRepository.findByProcessedFalse();
+        var outboxList = outboxRepository.findByProcessedFalse();
+
         outboxList.forEach(outbox -> {
             try {
-                //adicionar topico nos properties
-                kafkaTemplate.send("order-processed", outbox.getPayload());
-                outbox.setProcessed(true);
-                outboxRepository.save(outbox);
+                processOutboxRecord(outbox);
 
-                var order = orderRepository.findByExternalOrderId(outbox.getAggregateId());
-                order.setStatus(OrderStatus.SENT);
-                orderRepository.save(order);
+                updateOrderStatusToSend(outbox);
 
                 log.info("m=publishOutBoxEvents, event published: {}", outbox.getId());
             } catch (Exception e) {
                 log.error("m=publishOutBoxEvents, error publishing event: {}", outbox.getId(), e);
             }
         });
+    }
+
+    private void processOutboxRecord(Outbox outbox) {
+        kafkaTemplate.send("${kafka.topic.order-processed}", outbox.getPayload());
+
+        outbox.setProcessed(true);
+        outboxRepository.save(outbox);
+    }
+
+    private void updateOrderStatusToSend(Outbox outbox) {
+        var order = orderRepository.findByExternalOrderId(outbox.getAggregateId());
+        order.setStatus(OrderStatus.SENT);
+        orderRepository.save(order);
     }
 }
