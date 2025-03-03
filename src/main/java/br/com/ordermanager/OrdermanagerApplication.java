@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @SpringBootApplication
+@EnableScheduling
 public class OrdermanagerApplication {
 
 //	public static void main(String[] args) {

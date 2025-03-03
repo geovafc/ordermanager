@@ -13,7 +13,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "OM_ORDER", uniqueConstraints = @UniqueConstraint(columnNames = "external_order_id"))
 @Data
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Order {
 
