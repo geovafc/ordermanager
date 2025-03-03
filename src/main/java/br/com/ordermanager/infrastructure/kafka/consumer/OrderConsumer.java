@@ -13,8 +13,9 @@ public class OrderConsumer {
     private OrderService orderService;
 
 //    @KafkaListener(topics = "order-topic", groupId = "order-group", containerFactory = "orderKafkaListenerContainerFactory")
-    @KafkaListener(topics = "order-topic", groupId = "order-group")
+    @KafkaListener(topics = "${kafka.topic.order-created}", groupId = "${kafka.consumer.group-id.order-group}")
     public void consumeOrder(OrderEvent orderEvent) {
+//        commit offset manual
         orderService.processOrder(orderEvent);
     }
 }
