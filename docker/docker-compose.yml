@@ -34,3 +34,30 @@ services:
       - 9000:9000
     environment:
       KAFKA_BROKERCONNECT: kafka:9092
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: ordermanager
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - 5050:80
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+    driver: local

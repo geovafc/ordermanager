@@ -1,0 +1,30 @@
+-- Tabela OM_ORDER
+CREATE TABLE IF NOT EXISTS OM_ORDER (
+    order_id UUID PRIMARY KEY,
+    external_order_id UUID UNIQUE NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
+);
+
+-- Tabela OM_ORDER_ITEM
+CREATE TABLE IF NOT EXISTS OM_ORDER_ITEM (
+    id UUID PRIMARY KEY,
+    order_id UUID,
+    product_name VARCHAR(255) NOT NULL,
+    quantity INTEGER NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES OM_ORDER(order_id)
+);
+
+-- Tabela OM_OUTBOX
+CREATE TABLE IF NOT EXISTS OM_OUTBOX (
+    id UUID PRIMARY KEY,
+    aggregate_type VARCHAR(255) NOT NULL,
+    aggregate_id UUID UNIQUE NOT NULL,
+    type VARCHAR(255) NOT NULL,
+--    payload JSONB NOT NULL,
+    payload JSON NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    processed BOOLEAN NOT NULL
+);
