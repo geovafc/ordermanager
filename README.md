@@ -77,25 +77,25 @@ O serviço utiliza o Spring Boot, Kafka e um banco de dados relacional. A comuni
 
 ### Subir o Kafka Localmente
 
-Entrar no diretório ``docker`` do projeto esar o Docker Compose:
+Entrar no diretório ``docker`` do projeto usar o Docker Compose:
 
 ```bash
 docker-compose up -d
 ```
 
 ### Rodar a Aplicação
-Na parta raiz do projeto rodar os comandos gradle
+Na pasta raiz do projeto rodar os comandos gradle
 ```bash
 ./gradlew clean build 
 ```
 
-Em seguida o comando o comando a baixo e aguardar a aplicação ser executada para realizar a criação do tópico
+Em seguida, rodar o comando a baixo e aguardar a aplicação ser executada para realizar a criação do tópico
 
 ```bash
 ./gradlew bootRun
 ```
 
-Usar o seguinte json para a baixo para enviar como mensagem para o tópico `order-created`
+Usar o seguinte json a baixo para enviar como mensagem para o tópico `order-created`
 ```json
 {
   "externalOrderId":"550e8400-e29b-41d4-a716-446655440000",
