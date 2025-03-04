@@ -2,7 +2,7 @@ package br.com.ordermanager.infrastructure.kafka.consumer;
 
 
 import br.com.ordermanager.application.services.OrderService;
-import br.com.ordermanager.infrastructure.kafka.event.OrderEvent;
+import br.com.ordermanager.infrastructure.kafka.events.OrderEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;

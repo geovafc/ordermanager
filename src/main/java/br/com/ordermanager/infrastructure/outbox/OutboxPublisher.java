@@ -7,6 +7,7 @@ import br.com.ordermanager.domain.repositories.OutboxRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,9 @@ public class OutboxPublisher {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Value("${kafka.topic.order-processed}")
+    private String topicOrderProcessed;
+
     @Scheduled(fixedRateString = "${outbox.scheduled.fixedRate}")
     @Transactional
     public void publishOutBoxEvents() {
@@ -47,7 +51,7 @@ public class OutboxPublisher {
     }
 
     private void processOutboxRecord(Outbox outbox) {
-        kafkaTemplate.send("${kafka.topic.order-processed}", outbox.getPayload());
+        kafkaTemplate.send(this.topicOrderProcessed, outbox.getPayload());
 
         outbox.setProcessed(true);
         outboxRepository.save(outbox);
