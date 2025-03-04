@@ -1,8 +1,9 @@
 package br.com.ordermanager.application.services;
 
+import br.com.ordermanager.application.mappers.OrderMapper;
 import br.com.ordermanager.domain.entities.Outbox;
 import br.com.ordermanager.domain.repositories.OutboxRepository;
-import br.com.ordermanager.infrastructure.kafka.event.OrderEvent;
+import br.com.ordermanager.infrastructure.kafka.events.OrderEvent;
 import br.com.ordermanager.domain.entities.Order;
 import br.com.ordermanager.domain.repositories.OrderRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,7 +35,7 @@ public class OrderService {
 
             orderRepository.save(order);
 
-            saveOutbox(orderEvent);
+            saveOutbox(order);
 
         }
     }
@@ -48,21 +49,16 @@ public class OrderService {
                         .multiply(BigDecimal.valueOf(orderItem.quantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        var order = Order.builder()
-                .externalOrderId(orderEvent.externalOrderId())
-                .totalPrice(totalPrice)
-                .build();
-
-        var items = orderEvent.toOrderItemEntities(order);
-        order.setItems(items);
+       var order = OrderMapper.eventToEntity(orderEvent);
+       order.setTotalPrice(totalPrice);
 
         return order;
     }
 
-    private void saveOutbox(OrderEvent orderEvent) {
+    private void saveOutbox(Order order) {
         try {
 
-            var outbox = buildOutbox(orderEvent);
+            var outbox = buildOutbox(order);
 
             outboxRepository.save(outbox);
         } catch (Exception e) {
@@ -72,12 +68,14 @@ public class OrderService {
         }
     }
 
-    private static Outbox buildOutbox(OrderEvent orderEvent) throws JsonProcessingException {
+    private static Outbox buildOutbox(Order order) throws JsonProcessingException {
+         var orderProcessedEvent = OrderMapper.entityToOrderProcessedEvent(order);
+
         var objectMapper = new ObjectMapper();
-        var payload = objectMapper.writeValueAsString(orderEvent);
+        var payload = objectMapper.writeValueAsString(orderProcessedEvent);
 
         return Outbox.builder()
-                .aggregateId(orderEvent.externalOrderId())
+                .aggregateId(order.getExternalOrderId())
                 .payload(payload)
                 .build();
     }
