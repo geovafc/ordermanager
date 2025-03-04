@@ -54,7 +54,7 @@ public class OrderMapper {
                 order.getId(),
                 order.getExternalOrderId(),
                 itemEvents,
-                order.getStatus().name(),
+                order.getStatus() != null ? order.getStatus().name() : null,
                 order.getTotalPrice(),
                 order.getCreatedAt()
         );
